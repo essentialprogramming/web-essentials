@@ -8,6 +8,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Part;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 
@@ -28,7 +29,8 @@ public class ByteArrayServlet extends HttpServlet {
 
     @Override
     protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+        Part part = request.getPart("partName");
+        InputStream inputStreamFromPart = part.getInputStream();
         InputStream inputStream = null;
         try {
             inputStream = request.getInputStream();
@@ -48,6 +50,10 @@ public class ByteArrayServlet extends HttpServlet {
             // convert bytes[] to string
             String stringValue = new String(byteArray, StandardCharsets.UTF_8);
             System.out.println("Output : " + stringValue);
+
+            response.setContentType("text/plain");
+            response.setCharacterEncoding("UTF-8");
+            response.getWriter().write("Value " + stringValue + " successfully sent");
 
         } finally {
             if(inputStream!=null)
