@@ -33,20 +33,25 @@ public class WelcomeServlet extends HttpServlet {
 
         String name = request.getParameter("name");
         String pathInfo = request.getPathInfo(); // /{value}/test
-        String[] pathParts = pathInfo.split("/");
-        String location = pathParts[1]; // {value}
-        if (location == null){
+
+        if (pathInfo == null) {
             sendErroMEssage(response.getWriter());
+        } else{
+
+            String[] pathParts = pathInfo.split("/");
+            String location = pathParts[1]; // {value}
+            response.setContentType("text/html");//setting the content type
+            PrintWriter out = response.getWriter();//get the stream to write the data
+
+            //writing html in the stream
+            out.println("<html><body>");
+            out.println("<h1>Welcome to " + location + ", " + name + "! </h1>");
+            out.println("</body></html>");
+
+            out.close();//closing the stream
         }
-        response.setContentType("text/html");//setting the content type
-        PrintWriter out = response.getWriter();//get the stream to write the data
 
-        //writing html in the stream
-        out.println("<html><body>");
-        out.println("<h1>Welcome " + name + "! </h1>");
-        out.println("</body></html>");
 
-        out.close();//closing the stream
     }
 
     private void sendErroMEssage(PrintWriter out){
