@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Home page</title>
+    <link rel="stylesheet" type="text/css" href="/home/style.css">
+</head>
+<body>
+
+
+<h1 id="welcome-message"> </h1>
+
+<script>
+let ul = document.getElementById("welcome-message");
+
+fetch('/api/welcome')
+    .then(res => res.text())
+    .then(message => {
+        ul.innerHTML = message;
+    })
+    .catch(function(error) {
+        console.log(error);
+    });
+
+</script>
+
+</body>
+</html>
