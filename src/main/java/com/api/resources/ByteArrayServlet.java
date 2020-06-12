@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 
 
 @WebServlet("")
@@ -28,9 +29,9 @@ public class ByteArrayServlet extends HttpServlet {
     @Override
     protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        ServletInputStream sis = null;
+        InputStream inputStream = null;
         try {
-            InputStream inputStream = request.getInputStream();
+            inputStream = request.getInputStream();
             ByteArrayOutputStream buffer = new ByteArrayOutputStream();
             int nRead;
             byte[] data = new byte[1024];
@@ -41,9 +42,16 @@ public class ByteArrayServlet extends HttpServlet {
             buffer.flush();
             byte[] byteArray = buffer.toByteArray();
 
+            // no, don't do this, it returns the address of the object in memory
+            System.out.println("Text [Byte Format] : " + byteArray.toString());
+
+            // convert bytes[] to string
+            String stringValue = new String(byteArray, StandardCharsets.UTF_8);
+            System.out.println("Output : " + stringValue);
+
         } finally {
-            if(sis!=null)
-                sis.close();
+            if(inputStream!=null)
+                inputStream.close();
         }
     }
 
